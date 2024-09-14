@@ -1,6 +1,6 @@
 import pandas as pd
 
-fname = 'Data.csv'
+fname = 'data.csv'
 df = pd.read_csv(fname)
 
 col_averages = df.mean()
