@@ -21,7 +21,7 @@ for listItem in Names:
 mixed_
 print(Flattened_List)
 for i in range(len(Flattened_List)):
-    if  i%2 != 0:
+    if i % 2 != 0:
 
         print(Flattened_List[i], end=" ")
     else:
