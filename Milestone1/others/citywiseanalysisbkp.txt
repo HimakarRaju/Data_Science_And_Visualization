@@ -1,0 +1,38 @@
+Analysis of City-Wise Financial Trends:
+Chicago:
+Average Deposit: $39,695.38
+Average Payment: $28,168.24
+Average Transfer: -$158,047.75 (negative value indicates outflow)
+Average Withdrawal: -$227,193.69 (significant outflow)
+Interpretation: Chicago experiences substantial withdrawals, potentially indicating high expenses or debt repayment.
+Houston:
+Average Deposit: -$416,157.34 (negative value indicates net outflow)
+Average Payment: -$133,009.42 (outflow)
+Average Transfer: -$62,000.41 (outflow)
+Average Withdrawal: $258,646.18 (inflow)
+Interpretation: Houston has significant inflows through withdrawals, but overall, it faces financial challenges.
+Los Angeles:
+Average Deposit: -$17,999.94 (negative value indicates net outflow)
+Average Payment: $22,909.31
+Average Transfer: $131,971.87 (inflow)
+Average Withdrawal: $385,121.75 (large outflow)
+Interpretation: Los Angeles sees substantial withdrawals, possibly due to high living costs.
+New York:
+Average Deposit: $401,120
+Average Payment: $137,316.63
+Average Transfer: $74,336 (inflow)
+Average Withdrawal: -$14,856.24 (minor outflow)
+Interpretation: New York has healthy inflows and controlled outflows.
+Phoenix:
+Average Deposit: -$272,653.71 (negative value indicates net outflow)
+Average Payment: $210,411.21
+Average Transfer: $59,222.89 (inflow)
+Average Withdrawal: $107,266.19 (outflow)
+Interpretation: Phoenix faces challenges with net outflows but has significant inflows through transfers.
+
+
+Summary:
+Chicago and Houston struggle with significant outflows.
+Los Angeles deals with high withdrawals.
+New York maintains a balanced financial profile.
+Phoenix bala

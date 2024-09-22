@@ -1,0 +1,15 @@
+Using pandas Try to do the following :
+
+Bar Chart : Cost By Aircraft/ Make Model
+
+Histogram : Distribution of Total Cost
+
+Box Plot : Cost of Aircraft Make/Model
+
+Scatter Plot: Widlife Struck Vs. Cost
+
+Count Plot: Aircraft Types
+
+PairPlot: Scatter Matrix
+
+Heat Map : Correlation Between The numeric parameters used for graphing all the above

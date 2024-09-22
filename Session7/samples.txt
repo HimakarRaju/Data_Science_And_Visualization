@@ -1,0 +1,12 @@
+# Create two lists for fuel prices during holidays and non-holidays
+holiday_fuel_prices = df[df['IsHoliday'] == 1]['Fuel_Price']
+non_holiday_fuel_prices = df[df['IsHoliday'] == 0]['Fuel_Price']
+
+# Plot boxplot
+plt.figure(figsize=(8,6))
+plt.boxplot([holiday_fuel_prices, non_holiday_fuel_prices], labels=['Holiday', 'Non-Holiday'])
+plt.title('Fuel Price during Holiday vs Non-Holiday')
+plt.xlabel('Is Holiday')
+plt.ylabel('Fuel Price')
+plt.show()
+
