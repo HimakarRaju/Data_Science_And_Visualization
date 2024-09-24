@@ -1,0 +1,39 @@
+	
+	gender vs age
+	income vs spending
+	country vs income
+	which age people are spending more money from their income
+	education vs income
+	which age  gender are spending more money
+	country vs purchase frequency vs spending
+	country vs gender are spending money
+	income vs age
+	education vs country
+	gender vs income
+
+
+	bar graph
+	column graph
+	bar graph
+	bar graph,pie chart
+	column graph
+	bar graph
+	bar graph
+	column graph
+	column graph
+	column graph
+	column graph
+
+
+to understand segmentation by gender and age
+income vs spending ratio
+ratio by income and country
+income vs spending by age
+checking the average income by taking their education background
+comparing gender and age how much they are spending more money
+which country peoples are spending the more money 
+country vs spending ratio
+check the average income according their age
+check the count educational qualification for each country
+income vs gender ratio
+

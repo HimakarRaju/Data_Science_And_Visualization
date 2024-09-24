@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-file = 'customer_transactions.csv'
-df = pd.read_csv(file)
+
+df = pd.read_csv('Raw_Data.csv')
 
 # 1. Descriptive Statistics
 descriptive = df.describe().reset_index()
