@@ -34,7 +34,7 @@ def analyze_dataset(file_path):
     print("Descriptive Statistics")
     print(data.describe())
 
-    #Visualise data
+    #Visualize data
     print("PRetty form of data - Histogram \n")
     data.hist(figsize=(15,10))
     plt.show()
@@ -46,12 +46,12 @@ def analyze_dataset(file_path):
 
     #Correlation Matrix
     corr = data[['age','spending']].corr()
-    print("Corrleation between age and spending:",corr)
+    print("Correlation between age and spending:",corr)
     sns.heatmap(corr,annot=True,cmap='crest')
     plt.show()
 
     # Hypothesis test - t-test
-    print("Hyptothesis test (t-test")
+    print("Hypothesis test (t-test")
     group1= data['age'].values
     group2= data['purchase_frequency'].values
 
@@ -62,11 +62,10 @@ def analyze_dataset(file_path):
     print("Regression Analysis")
     X=data[['age','income']]
     Y=data[['spending']]
-
     X_train, X_test,Y_train, Y_test = train_test_split(X,Y,test_size=0.2)
     model=LinearRegression()
     model.fit(X_train,Y_train)
-    print("Model co-efficients:",model.coef_)
+    print("Model co-efficient:",model.coef_)
     print("Model Intercept:",model.intercept_)
 
     

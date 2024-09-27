@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 import pandas as pd
 
 # step 1 reading file
-file = 'customer_transactions.csv'
+file = 'C:\Users\HimakarRaju\Desktop\PreSkilling\Python\Data_Science_And_Visualization\A_B_Milestone1\Final\customer_transactions.csv'
 df = pd.read_csv(file)
 
 
