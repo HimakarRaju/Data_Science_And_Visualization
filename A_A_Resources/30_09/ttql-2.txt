@@ -1,0 +1,144 @@
+import numpy as np
+import pickle
+import os
+
+# Tic Tac Toe board
+BOARD_SIZE = 3
+
+# Q-learning parameters
+LEARNING_RATE = 0.1
+DISCOUNT_FACTOR = 0.95
+EXPLORATION_RATE = 0.1
+
+# Q-table file
+QTABLE_FILE = "qtable_tictactoe.pkl"
+
+# Initialize Q-table
+if os.path.exists(QTABLE_FILE):
+    with open(QTABLE_FILE, "rb") as f:
+        q_table = pickle.load(f)
+else:
+    q_table = {}
+
+def get_board_hash(board):
+    return str(board.reshape(BOARD_SIZE*BOARD_SIZE))
+
+def init_board():
+    return np.zeros((BOARD_SIZE, BOARD_SIZE))
+
+def check_winner(board, player):
+    for i in range(BOARD_SIZE):
+        if np.all(board[i, :] == player) or np.all(board[:, i] == player):
+            return True
+    if np.all(np.diag(board) == player) or np.all(np.diag(np.fliplr(board)) == player):
+        return True
+    return False
+
+def is_draw(board):
+    return np.all(board != 0)
+
+def get_empty_cells(board):
+    return list(zip(*np.where(board == 0)))
+
+def update_q_table(state, action, reward, next_state, player):
+    state_hash = get_board_hash(state)
+    next_state_hash = get_board_hash(next_state)
+    
+    if state_hash not in q_table:
+        q_table[state_hash] = np.zeros(BOARD_SIZE * BOARD_SIZE)
+    
+    if next_state_hash not in q_table:
+        q_table[next_state_hash] = np.zeros(BOARD_SIZE * BOARD_SIZE)
+
+    current_q = q_table[state_hash][action]
+    future_q = np.max(q_table[next_state_hash])
+    new_q = current_q + LEARNING_RATE * (reward + DISCOUNT_FACTOR * future_q - current_q)
+    
+    q_table[state_hash][action] = new_q
+
+def choose_action(board, player):
+    state_hash = get_board_hash(board)
+    
+    if np.random.rand() < EXPLORATION_RATE:
+        empty_cells = get_empty_cells(board)
+        return np.random.choice([i * BOARD_SIZE + j for i, j in empty_cells])
+    
+    if state_hash not in q_table:
+        q_table[state_hash] = np.zeros(BOARD_SIZE * BOARD_SIZE)
+    
+    q_values = q_table[state_hash]
+    empty_cells = get_empty_cells(board)
+    valid_moves = [i * BOARD_SIZE + j for i, j in empty_cells]
+    
+    best_move = max(valid_moves, key=lambda x: q_values[x])
+    return best_move
+
+def print_board(board):
+    for row in board:
+        print(" | ".join(["X" if x == 1 else "O" if x == -1 else " " for x in row]))
+        print("-" * 5)
+
+def play_game():
+    board = init_board()
+    current_player = 1  # 1 is X, -1 is O
+    move_count = 0
+    
+    while True:
+        print_board(board)
+        
+        if current_player == 1:
+            action = int(input("Enter your move (0-8): "))
+        else:
+            action = choose_action(board, current_player)
+        
+        row, col = divmod(action, BOARD_SIZE)
+        
+        if board[row, col] != 0:
+            print("Invalid move. Try again.")
+            continue
+
+        board[row, col] = current_player
+        move_count += 1
+
+        if check_winner(board, current_player):
+            print_board(board)
+            if current_player == 1:
+                print("Player X wins!")
+            else:
+                print("AI O wins!")
+            return current_player, board
+
+        if is_draw(board):
+            print_board(board)
+            print("It's a draw!")
+            return 0, board
+
+        current_player = -current_player
+
+def main():
+    try:
+        while True:
+            winner, final_board = play_game()
+
+            if winner == 1:
+                print("You won!")
+            elif winner == -1:
+                print("AI won!")
+            else:
+                print("It’s a draw!")
+
+            save_q_table()
+
+            # Ask if the player wants to continue
+            cont = input("Do you want to play again? (yes/no): ").lower()
+            if cont != "yes":
+                break
+    finally:
+        save_q_table()
+
+def save_q_table():
+    with open(QTABLE_FILE, "wb") as f:
+        pickle.dump(q_table, f)
+
+if __name__ == "__main__":
+    main()

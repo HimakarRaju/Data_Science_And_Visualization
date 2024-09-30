@@ -1,0 +1,8 @@
+• This will create a model and use neural network using the keras
+library and trains itself on the dataset
+• Dynamic Target Column : This will pick the most suitable
+column(int) if not specified
+• Model Evaluation : Provides a classification report for tasks , mean
+squared error for regression tasks.
+• This can be customized to suit the predictions we need to make in
+the context of the data domain

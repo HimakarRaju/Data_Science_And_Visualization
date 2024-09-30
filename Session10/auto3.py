@@ -1,9 +1,6 @@
-# Import necessary libraries
 import argparse
 import os
 import pandas as pd
-# import matplotlib.pyplot as plt
-# import seaborn as sns
 import numpy as np
 import plotly.express as px
 import random
@@ -35,8 +32,6 @@ def clean_data(df):
     df[num_cols] = imputer_num.fit_transform(df[num_cols])
     df[cat_cols] = imputer_cat.fit_transform(df[cat_cols])
 
-    return df
-
 # Step 3: Format columns (Convert categorical variables, etc.)
 
 
@@ -49,7 +44,7 @@ def format_columns(df):
         df[col] = le.fit_transform(df[col])
         label_encoders[col] = le
 
-    return df, label_encoders
+    return label_encoders
 
 # Analyze data to separate categorical and numerical columns
 
@@ -83,88 +78,39 @@ def graph_suggester(df, categorical_cols, numerical_cols):
 
     return suggestions
 
-
 # Visualize the data with random selection
 
 
 def visualize_data(df, graph_suggestions):
     for col, graph_types in graph_suggestions.items():
-        # Choose one random graph type if there are multiple suggestions
         graph_type = random.choice(graph_types)
 
         if graph_type == 'Bar plot':
-
-            fig = px.bar(df, x=col if df[col].nunique() > 10 else df.index, y=col, title=f"Bar plot of {
-                         col}", color_discrete_sequence=['blue'])
-
-            # Add linear trend line
-            if df[col].nunique() > 10:
-                z = np.polyfit(df.index, df[col], 1)
-                p = np.poly1d(z)
-                fig.add_trace(px.line(x=df.index, y=p(df.index),
-                              color='red', name='Trend Line'))
-
-            fig.update_layout(legend=dict(
-                title="Columns", orientation="h", y=1.1))
+            fig = px.bar(df, x=col, y=col if df[col].nunique(
+            ) > 10 else df.index, title=f"Bar plot of {col}")
 
         elif graph_type == 'Count Plot':
-            fig = px.histogram(df, x=col, title=f"Count Plot of {
-                               col}", color_discrete_sequence=['blue'])
+            fig = px.histogram(df, x=col, title=f"Count Plot of {col}")
 
-            # Add linear trend line
-            if df[col].nunique() > 10:
-                z = np.polyfit(df[col].value_counts().index,
-                               df[col].value_counts().values, 1)
-                p = np.poly1d(z)
-                fig.add_trace(px.line(x=df[col].value_counts().index, y=p(
-                    df[col].value_counts().index), color='red', name='Trend Line'))
-
-            fig.update_layout(legend=dict(
-                title="Columns", orientation="h", y=1.1))
         elif graph_type == 'Pie chart':
-            fig = px.pie(df, names=col, title=f"Pie Plot of {
-                         col}", color_discrete_sequence=['blue'])
-            fig.update_layout(legend=dict(
-                title="Columns", orientation="h", y=1.1))
+            fig = px.pie(df, names=col, title=f"Pie Plot of {col}")
+
         elif graph_type == 'Histogram':
-            fig = px.histogram(df, x=col, title=f"Distribution Plot of {
-                               col}", color_discrete_sequence=['blue'])
+            fig = px.histogram(df, x=col, title=f"Distribution Plot of {col}")
 
-            # Add linear trend line
-            if df[col].nunique() > 10:
-                z = np.polyfit(df[col].value_counts().index,
-                               df[col].value_counts().values, 1)
-                p = np.poly1d(z)
-                fig.add_trace(px.line(x=df[col].value_counts().index, y=p(
-                    df[col].value_counts().index), color='red', name='Trend Line'))
-
-            fig.update_layout(legend=dict(
-                title="Columns", orientation="h", y=1.1))
         elif graph_type == 'Boxplot':
-            fig = px.box(df, y=col, title=f"Boxplot Plot of {
-                         col}", color_discrete_sequence=['blue'])
-            fig.update_layout(legend=dict(
-                title="Columns", orientation="h", y=1.1))
+            fig = px.box(df, y=col, title=f"Boxplot Plot of {col}")
+
         elif graph_type == 'Scatterplot':
             num_col = next((n for n in df.select_dtypes(
                 include=["number"]).columns if n != col), None)
             if num_col:
-                fig = px.scatter(df, x=col, y=num_col, color=col, size=num_col, hover_data=[
-                                 col, num_col], title=f"Scatter Plot of {col} vs {num_col}")
+                fig = px.scatter(df, x=col, y=num_col,
+                                 title=f"Scatter Plot of {col} vs {num_col}")
 
-                # Add linear trend line
-                z = np.polyfit(df[col], df[num_col], 1)
-                p = np.poly1d(z)
-                fig.add_trace(px.line(x=df[col], y=p(
-                    df[col]), color='red', name='Trend Line'))
-
-                fig.update_layout(legend=dict(
-                    title="Columns", orientation="h", y=1.1))
         elif graph_type in ['Time series plot', 'Line chart']:
-            fig = px.line(df, x=df.index, y=col,
-                          color_discrete_sequence=['blue'])
-            fig.update_layout(legend=dict(
-                title="Columns", orientation="h", y=1.1))
+            fig = px.line(df, x=df.index, y=col, title=f"Time series of {col}")
+
         fig.show()
 
 # Step 4: Get statistics
@@ -172,8 +118,7 @@ def visualize_data(df, graph_suggestions):
 
 def get_statistics(df):
     num_cols = df.select_dtypes(include=['float64', 'int64']).columns
-    stats = df[num_cols].describe().T[['mean', '50%', 'std']]
-    return stats
+    return df[num_cols].describe().T[['mean', '50%', 'std']]
 
 
 def main():
@@ -185,10 +130,10 @@ def main():
 
     # Load and clean data
     df = read_data(args.file_path)
-    df = clean_data(df)
+    clean_data(df)
 
     # Format columns
-    df, label_encoders = format_columns(df)
+    label_encoders = format_columns(df)
 
     # Display stats
     stats = get_statistics(df)
@@ -199,11 +144,6 @@ def main():
     categorical_cols, numerical_cols = analyze_data(df)
     graph_suggestions = graph_suggester(df, categorical_cols, numerical_cols)
     visualize_data(df, graph_suggestions)
-
-    # # Display graph suggestions
-    # print("\nSuggested Graphs:")
-    # for col, graphs in graph_suggestions.items():
-    #     print(f'{col}: {graphs}')
 
 
 if __name__ == "__main__":

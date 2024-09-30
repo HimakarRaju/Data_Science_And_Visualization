@@ -1,0 +1,56 @@
+import requests
+from bs4 import BeautifulSoup
+from collections import Counter
+
+class InteractiveBot:
+    def __init__(self):
+        self.vocabulary = Counter()
+
+    def fetch_answer(self, question):
+        search_url = f"https://www.google.com/search?q={question.replace(' ', '+')}"
+        headers = {'User-Agent': 'Mozilla/5.0'}
+
+        try:
+            response = requests.get(search_url, headers=headers)
+            response.raise_for_status()  # Raise an error for bad responses
+
+            soup = BeautifulSoup(response.text, 'html.parser')
+            results = soup.select('h3')  # Get all the headings in the search result
+            
+            if results:
+                print("Answer found:")
+                for result in results[:3]:  # Show top 3 results
+                    print("Title:", result.text)
+                    snippet = result.find_next('span')
+                    if snippet:
+                        print("Snippet:", snippet.text)
+                    print()  # New line for better readability
+            else:
+                print("No results found.")
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred: {e}")
+
+    def ask_question(self):
+        while True:
+            user_input = input("What do you want to know? ")
+            self.update_vocabulary(user_input)
+            self.fetch_answer(user_input)
+
+            another_question = input("Do you want to ask another question? (yes/no): ").strip().lower()
+            if another_question != 'yes':
+                break
+
+        self.print_vocabulary()
+
+    def update_vocabulary(self, user_input):
+        words = user_input.lower().split()
+        self.vocabulary.update(words)
+
+    def print_vocabulary(self):
+        print("\nYour vocabulary usage:")
+        for word, count in self.vocabulary.most_common(10):  # Print the 10 most common words
+            print(f"{word}: {count}")
+
+if __name__ == "__main__":
+    bot = InteractiveBot()
+    bot.ask_question()
