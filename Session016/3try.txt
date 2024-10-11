@@ -1,0 +1,65 @@
+import pytesseract
+import cv2
+import sympy as sp 
+
+
+
+# Configure pytesseract
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Update with your path
+
+def extract_text_from_image(image_path):
+    """Extract text from image using pytesseract"""
+    try:
+        img = cv2.imread(image_path)
+        text = pytesseract.image_to_string(img)
+        return text.strip()
+    except Exception as e:
+        return f"Error extracting text: {e}"
+def create_equation(line):
+    # Check for the presence of '='
+    if line.count('=') > 1:
+        raise ValueError("Invalid line format. Please ensure the line contains only one '=' sign.")
+
+    left_side, right_side = line.split('=') if '=' in line else (line, '')
+
+    # Normalize and prepare sides for sympy
+    left_side = left_side.replace(' ', '')  # Remove spaces from left side
+    right_side = right_side.replace(' ', '')  # Remove spaces from right side
+
+    if not right_side:  # If no right side, treat it as equal to zero
+        right_side = '0'
+
+    return left_side.strip(), right_side.strip()
+
+def fix_multiplication(expr):
+    import re
+    # Insert * between a number and a variable (e.g., 2(x) -> 2*x)
+    expr = re.sub(r'(\d)([a-zA-Z(])', r'\1*\2', expr)
+    return expr
+
+
+image_path = r"C:\images\Picture13.jpg"
+image2=extract_text_from_image(image_path)
+#print(type(image2))
+line=image2
+print(line)
+
+#solving the equation
+x=sp.Symbol('x')
+lines = line.split("\n")
+print(lines)
+for line in lines:
+    if line != "" or line != "sqrt(64)": 
+        
+        print (f"item= {line}")
+        a=fix_multiplication(line)
+        line1=create_equation(a)
+        lhs, rhs = line1
+            
+        p = sp.solveset(sp.Eq(eval(lhs),eval(rhs)),x)
+        print (f"result- {p}")
+    else:
+        pass
+
+    
+        

@@ -1,0 +1,63 @@
+Fixing line 1: 'def example_function():
+' -> 'def example_function():'
+Fixing line 2: 'print("Hello, World!"
+' -> '    print("Hello, World!"'
+Fixing line 3: '    return 10
+' -> 'return 10'
+Line 4 is empty, no fix applied.
+Line 5 is empty, no fix applied.
+Fixing line 6: 'def test_function()
+' -> 'def test_function():'
+Fixing line 7: ' if 1 < 2
+' -> '    if 1 < 2:'
+Fixing line 8: '    print("2 > 1")
+' -> '    print("2 > 1")'
+Fixing line 9: ' else
+' -> 'else:'
+Fixing line 10: '  print("1>2")
+' -> 'print("1>2")'
+Fixing line 11: 'print("This will raise an error"
+' -> 'print("This will raise an error"'
+Line 12 is empty, no fix applied.
+Line 13 is empty, no fix applied.
+Line 14 is empty, no fix applied.
+Fixing line 15: '# Iterate over a range of numbers
+' -> '# Iterate over a range of numbers'
+Fixing line 16: '    for i in range(25, 29):
+' -> 'for i in range(25, 29):'
+Fixing line 17: '    print(i)
+' -> 'print(i)'
+Line 18 is empty, no fix applied.
+Fixing line 19: 'response_code = 400
+' -> 'response_code = 400'
+Line 20 is empty, no fix applied.
+Fixing line 21: 'match response_code:
+' -> 'match response_code:'
+Fixing line 22: '    case 200:
+' -> '    case 200:'
+Fixing line 23: '        print("Everything's peachy!")
+' -> '        print("Everything's peachy!")'
+Fixing line 24: '    case 300:
+' -> '    case 300:'
+Fixing line 25: '        print("You're going somewhere else!")
+' -> '        print("You're going somewhere else!")'
+Fixing line 26: '    case 400:
+' -> '    case 400:'
+Fixing line 27: '        print("Uh oh. Are you lost?")
+' -> '        print("Uh oh. Are you lost?")'
+Fixing line 28: '    case 500:
+' -> '    case 500:'
+Fixing line 29: '        print("Yikes. Something went wrong!")
+' -> '        print("Yikes. Something went wrong!")'
+Line 30 is empty, no fix applied.
+Fixing line 31: '      count = 0
+' -> 'count = 0'
+Fixing line 32: 'while count < 3:
+' -> 'while count < 3:'
+Fixing line 33: 'print("Hello, World!")
+' -> 'print("Hello, World!")'
+Fixing line 34: 'count += 1
+' -> 'count += 1'
+Fixing unmatched parentheses in line 2: '    print("Hello, World!"'
+Fixing unmatched parentheses in line 11: 'print("This will raise an error"'
+Fixed code written to: badcode_fixed.py

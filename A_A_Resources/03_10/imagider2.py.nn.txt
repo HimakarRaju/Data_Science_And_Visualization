@@ -1,0 +1,73 @@
+import os
+import cv2
+import pytesseract
+from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
+from tensorflow.keras.preprocessing.image import img_to_array
+import numpy as np
+from PIL import Image
+from prettytable import PrettyTable
+
+# Configure pytesseract
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Update with your path
+
+# Load pre-trained MobileNetV2 model for image classification
+model = MobileNetV2(weights='imagenet')
+
+def extract_text_from_image(image_path):
+    """Extract text from image using pytesseract"""
+    try:
+        img = Image.open(image_path)
+        text = pytesseract.image_to_string(img)
+        return text.strip()
+    except Exception as e:
+        return f"Error extracting text: {e}"
+
+def identify_objects_in_image(image_path):
+    """Identify objects in an image using MobileNetV2 model"""
+    try:
+        img = cv2.imread(image_path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img_resized = cv2.resize(img, (224, 224))  # Resize to MobileNetV2 input size
+        img_array = img_to_array(img_resized)
+        img_array = np.expand_dims(img_array, axis=0)
+        img_array = preprocess_input(img_array)
+
+        # Predict
+        predictions = model.predict(img_array)
+        decoded_preds = decode_predictions(predictions, top=3)[0]
+
+        # Get top 3 predictions
+        objects_detected = []
+        for _, label, prob in decoded_preds:
+            objects_detected.append(f"{label} ({prob*100:.2f}%)")
+        
+        return objects_detected
+    except Exception as e:
+        return [f"Error identifying objects: {e}"]
+
+def process_images_in_folder(folder_path):
+    """Process all images in the folder and show results in a tabular format"""
+    table = PrettyTable()
+    table.field_names = ["Processing Image Name", "Extracted Text", "Detected Objects"]
+    
+    for file_name in os.listdir(folder_path):
+        if file_name.lower().endswith(('png', 'jpg', 'jpeg', 'bmp', 'gif')):
+            image_path = os.path.join(folder_path, file_name)
+            
+            # Extract text from image
+            text = extract_text_from_image(image_path)
+            
+            # Identify objects in the image
+            objects = identify_objects_in_image(image_path)
+            objects_str = ', '.join(objects) if objects else "None"
+            
+            # Add row to table
+            table.add_row([file_name, text, objects_str])
+    
+    # Print the table
+    print(table)
+
+if __name__ == "__main__":
+    folder_path = r"C:\Users\kvvn\OneDrive\Pictures"  # Replace with your folder path
+    process_images_in_folder(folder_path)

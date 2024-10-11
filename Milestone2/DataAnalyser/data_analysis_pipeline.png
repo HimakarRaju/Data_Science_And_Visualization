@@ -1,0 +1,11 @@
+
+graph TD;
+    A[Start] --> B[Load Dataset]
+    B --> C[Check Column Names]
+    C --> D[Suggest Target Column]
+    D --> E[Transform Data]
+    E --> F[Evaluate Models]
+    F --> G[Generate and Save Plots]
+    G --> H[Save Metadata to Pickle]
+    H --> I[Log Steps and Errors]
+    I --> J[End]

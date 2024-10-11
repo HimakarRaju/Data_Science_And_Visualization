@@ -10,3 +10,8 @@ Datasets used:
 3. Bird Strike Dataset
 
 milestone 1 started on 20-09-2024
+updated till 11-10-2024
+
+## Todo
+
+have to optimise the number of files their output to reasonable number

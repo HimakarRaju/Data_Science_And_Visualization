@@ -1,0 +1,7 @@
+2024-10-11 13:17:22,526 - ERROR - Error in model Logistic Regression: could not convert string to float: 'Lead Data Engineer'
+2024-10-11 13:17:22,546 - ERROR - Error in model Random Forest: could not convert string to float: 'Lead Data Engineer'
+2024-10-11 13:17:22,547 - ERROR - Error in model Gradient Boosting: could not convert string to float: 'Lead Data Engineer'
+2024-10-11 13:17:22,548 - ERROR - Error in model K-Neighbors: could not convert string to float: 'Lead Data Engineer'
+2024-10-11 13:17:22,548 - ERROR - Error in model Support Vector Classifier: could not convert string to float: 'Lead Data Engineer'
+2024-10-11 13:17:22,549 - ERROR - Error in model Naive Bayes: could not convert string to float: 'Lead Data Engineer'
+2024-10-11 13:17:22,550 - ERROR - Error in model Decision Tree: could not convert string to float: 'Lead Data Engineer'

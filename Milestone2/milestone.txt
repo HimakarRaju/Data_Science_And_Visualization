@@ -1,0 +1,28 @@
+Superman7.py - New features to add
+
+a) Accept a folder or a filename as a command line parameter.
+
+	1) If the input is a file name - then store the model used for analysis in the pickle file.
+	ex: ccspend.csv = ccspend_model.pkl,
+
+	2) If the input is a folder name - then store the model used for analysis in the pickle file
+	ex: ccspend.csv = ccspend_model, stapler.csv = stapler_model.pkl
+
+    step1. import libraries
+    step2. Take use input(file/folder) from command line
+    step3. check if input is file or folder path
+    step4. if it is file using superman7 analyse the data and store it in pickle file
+    step5. if it is folder  we  have to go throw each file check for extension csv/xlsx
+
+    (if it is csv/xlsx do analysis and store data in pickle file)
+
+
+b)print the summary of the model
+
+    step1. for each data set generate model and store
+    step2. list down every new data set and see is there a training model available use it
+           if available otherwise save the new model which is used to analyse
+
+
+whenever a new data set is added find out if an existing model can be reused to analyse to new data set.
+if not automatically figure out the best applicable model and save that model

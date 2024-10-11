@@ -1,0 +1,3 @@
+
+Best Model: Random Forest Regressor
+Best Model Metrics: {'mse': np.float64(0.0005074911169248961), 'mae': np.float64(0.016295661106934936), 'r2': 0.619072300254569}

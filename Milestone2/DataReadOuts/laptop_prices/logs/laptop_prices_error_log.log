@@ -1,0 +1,18 @@
+2024-10-11 00:50:58,582 - ERROR - Model Logistic Regression failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 00:50:58,583 - ERROR - Model Random Forest failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 00:50:58,585 - ERROR - Model Gradient Boosting failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 00:50:58,587 - ERROR - Model KNN failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 00:50:58,587 - ERROR - Model SVC failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 00:50:58,588 - ERROR - Model Naive Bayes failed with error: Unknown label type: (array([0.08861219, 0.09170574, 0.10784657, ..., 0.85318472, 0.87192623,
+       0.89251888]),)
+2024-10-11 00:50:58,589 - ERROR - Model Decision Tree failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 00:51:00,180 - ERROR - Main analysis failed with error: could not convert string to float: 'Apple'
+2024-10-11 01:01:11,788 - ERROR - Model Logistic Regression failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 01:01:11,789 - ERROR - Model Random Forest failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 01:01:11,791 - ERROR - Model Gradient Boosting failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 01:01:11,792 - ERROR - Model KNN failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 01:01:11,793 - ERROR - Model SVC failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 01:01:11,793 - ERROR - Model Naive Bayes failed with error: Unknown label type: (array([0.08861219, 0.09170574, 0.10784657, ..., 0.85318472, 0.87192623,
+       0.89251888]),)
+2024-10-11 01:01:11,794 - ERROR - Model Decision Tree failed with error: Unknown label type: continuous. Maybe you are trying to fit a classifier, which expects discrete classes on a regression target with continuous values.
+2024-10-11 01:01:12,978 - ERROR - Main analysis failed with error: could not convert string to float: 'Apple'

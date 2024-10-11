@@ -1,0 +1,62 @@
++-------------------------------+
+| Start                         |
++-------------------------------+
+            |
+            v
++-------------------------------+
+| Get image file path from user |
++-------------------------------+
+            |
+            v
++-------------------------------------------+
+| Preprocess the image                      |
+| - Convert to grayscale                    |
+| - Enhance contrast                        |
++-------------------------------------------+
+            |
+            v
++-------------------------------------------+
+| Perform OCR on the image                  |
+| - Use pytesseract to extract text         |
+| - Extract each line of text               |
++-------------------------------------------+
+            |
+            v
++--------------------------------------------+
+| For each extracted line from OCR:          |
++--------------------------------------------+
+            |
+            v
++--------------------------------------------+
+| Is the line a quadratic equation?          |
+| - Use regex to identify a quadratic        |
+|   equation in the format ax^2 + bx + c = 0 |
++--------------------------------------------+
+            | Yes                             | No
+            |                                 |
+            v                                 v
++--------------------------------------------+  +-------------------------+
+| Extract coefficients a, b, c from the line |  | No valid quadratic      |
+| - Parse the quadratic equation             |  | equation found, print   |
+| - Default values if coefficients missing   |  | message                 |
++--------------------------------------------+  +-------------------------+
+            |
+            v
++--------------------------------------------+
+| Solve the quadratic equation using SymPy   |
+| - Solve for x using the formula ax^2 + bx  |
+|   + c = 0                                  |
++--------------------------------------------+
+            |
+            v
++--------------------------------------------+
+| Print steps and solutions:                 |
+| - Show the quadratic equation              |
+| - Display the steps for solving            |
+| - Display the final solutions for x        |
++--------------------------------------------+
+            |
+            v
++-------------------------------+
+| End                           |
++-------------------------------+

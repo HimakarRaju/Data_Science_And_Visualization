@@ -1,0 +1,100 @@
++-----------------------+
+| Start                 |
++-----------------------+
+        |
+        v
++----------------------------+
+| Load learned data from file |
+| (If no learned data file,   |
+| start with an empty dataset)|
++----------------------------+
+        |
+        v
++----------------------------+
+| Parse arguments (CSV file   |
+| path, action: 'train'/'predict') |
++----------------------------+
+        |
+        v
++------------------------------------+
+| Is the action 'train'?             |
++------------------------------------+
+        | Yes                                 No
+        v                                   v
++----------------------------+   +------------------------------------+
+| Load dataset from CSV file  |   | Check if CSV file provided         |
+| (name, gender, probability) |   | and train model if available       |
++----------------------------+   +------------------------------------+
+        |                                 | Yes         No
+        v                                 v             v
++------------------------------------+   +--------------------------------------+
+| Preprocess names using character  |   | Skip model training if CSV not given |
+| bigrams/trigrams                  |   +--------------------------------------+
++------------------------------------+  
+        |
+        v
++---------------------------------------+
+| Train model using Logistic Regression |
+| with the name and gender dataset      |
+| (using sample weights from probability|
+| column)                               |
++---------------------------------------+
+        |
+        v
++--------------------------------------------+
+| Evaluate model (e.g., print accuracy score)|
++--------------------------------------------+
+        |
+        v
++------------------------+
+| Model training complete |
++------------------------+
+        |
+        v
++------------------------------------+
+| Loop for continuous name prediction|
++------------------------------------+
+        |
+        v
++------------------------------+
+| Prompt user to enter a name   |
++------------------------------+
+        |
+        v
++------------------------------+
+| Is name in learned data?      |
++------------------------------+
+        | Yes                 No
+        v                     v
++--------------------------+  +-------------------------------+
+| Predict gender using      |  | Predict gender using ML model |
+| learned data (from file)  |  +-------------------------------+
++--------------------------+ 
+        |
+        v
++--------------------------------------------+
+| Output predicted gender                    |
++--------------------------------------------+
+        |
+        v
++----------------------------------------+
+| Ask user if the prediction was correct |
++----------------------------------------+
+        |
+        v
++----------------------------------------------+
+| Was the prediction correct?                  |
++----------------------------------------------+
+        | Yes                                No
+        v                                   v
++-----------------------------+   +---------------------------------------+
+| Continue with next name?     |   | Prompt user to provide the correct    |
+| (Ask user to enter next name)|   | gender, save to learned data file,    |
+| (yes/no)                     |   | and continue prediction loop          |
++-----------------------------+   +---------------------------------------+
+        | Yes                No         |
+        v                     v         v
++--------------------+     +-----------------------+
+| Repeat prediction  |     | End prediction process |
++--------------------+     +-----------------------+
+

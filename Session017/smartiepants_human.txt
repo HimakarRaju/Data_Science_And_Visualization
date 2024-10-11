@@ -1,0 +1,182 @@
+import pandas as pd
+import numpy as np
+import argparse
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+import warnings
+
+warnings.filterwarnings('ignore')
+
+def auto_select_target(df):
+    # Automatically select the target column as the numeric column with the most unique values
+    numeric_cols = df.select_dtypes(include=[np.number]).columns
+    if not numeric_cols.any():
+        raise ValueError("No numeric columns found in the DataFrame.")
+    
+    target_column = numeric_cols[0]  # Default to the first numeric column
+    for col in numeric_cols:
+        if df[col].nunique() > df[target_column].nunique():
+            target_column = col
+    return target_column
+
+def preprocess_data(df, target_column):
+    X = df.drop(columns=[target_column])
+    y = df[target_column]
+    return X, y
+
+def explore_data(df):
+    print("\n--- Data Exploration ---")
+    print("Basic insights and patterns from the dataset:")
+    print(f"Dataset contains {df.shape[0]} rows and {df.shape[1]} columns.")
+    print("Here are some interesting stats from the data:")
+    print(df.describe())
+    print("\nTop 5 most common values in each categorical column:")
+    for col in df.select_dtypes(include=['object']):
+        print(f"{col}:")
+        print(df[col].value_counts().head(), "\n")
+
+def print_human_readable_results(mse, mae, r2, feature_importance=None, model_type='linear'):
+    print("\n--- Human Comprehendable Results ---")
+    print(f"Model Type: {model_type}")
+    print(f"Mean Squared Error (MSE) is {mse:.2f}.")
+    print(f"Mean Absolute Error (MAE) is {mae:.2f}.")
+    print(f"R² Score is {r2:.2f}.")
+    
+    # Explain R² in plain English
+    if r2 > 0.75:
+        print("This model explains most of the variability in the data.")
+    elif 0.5 < r2 <= 0.75:
+        print("The model explains a moderate amount of the variability in the data.")
+    else:
+        print("The model does not explain much of the variability in the data. Consider improving the model.")
+
+    if feature_importance is not None:
+        print("\n--- Important Features ---")
+        print("Here are the features that have the most impact on the predictions:")
+        print(feature_importance.sort_values(by="Importance", ascending=False).head(5))
+
+        print("\nActionable Insights:")
+        print("Focus on these important features to impact the outcome:")
+        for feature in feature_importance.sort_values(by="Importance", ascending=False).head(3).index:
+            print(f"- Feature: {feature}")
+    
+def analyze_data(df, model_type='linear'):
+    # Check for empty DataFrame
+    if df.empty:
+        print("The DataFrame is empty.")
+        return
+
+    # Print initial information about the dataset
+    print("Dataset loaded with {} rows and {} columns.".format(df.shape[0], df.shape[1]))
+    print("\nDataset summary:")
+    print(df.describe(include='all'))  # Show summary of all data types
+    print("\nData Types:")
+    print(df.dtypes)
+
+    # Convert all object types to numeric where possible
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    # Handle missing values
+    df.fillna(0, inplace=True)
+
+    # Automatically select target column
+    target_column = auto_select_target(df)
+    print(f"\nAutomatically selected target column for analysis: {target_column}")
+
+    X, y = preprocess_data(df, target_column)
+
+    # Identify numerical and categorical columns
+    numerical_cols = X.select_dtypes(include=['int64', 'float64']).columns.tolist()
+    categorical_cols = X.select_dtypes(include=['object']).columns.tolist()
+
+    print("\nNumerical columns:", numerical_cols)
+    print("Categorical columns:", categorical_cols)
+
+    # Explore the data for patterns and learnings
+    explore_data(df)
+
+    # Create a Column Transformer for preprocessing
+    transformers = []
+    if numerical_cols:
+        transformers.append(('num', StandardScaler(), numerical_cols))
+    if categorical_cols:
+        transformers.append(('cat', OneHotEncoder(handle_unknown='ignore'), categorical_cols))
+
+    preprocessor = ColumnTransformer(transformers=transformers)
+
+    # Choose the model based on input
+    if model_type == 'linear':
+        model = LinearRegression()
+    elif model_type == 'decision_tree':
+        model = DecisionTreeRegressor(random_state=42)
+    elif model_type == 'random_forest':
+        model = RandomForestRegressor(random_state=42)
+    else:
+        raise ValueError("Invalid model type. Choose from 'linear', 'decision_tree', 'random_forest'.")
+
+    # Create a pipeline with preprocessing and the selected model
+    pipeline = Pipeline(steps=[('preprocessor', preprocessor), ('model', model)])
+
+    # Split the data
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Fit the pipeline
+    pipeline.fit(X_train, y_train)
+
+    # Make predictions
+    y_pred = pipeline.predict(X_test)
+
+    # Calculate metrics
+    mse = mean_squared_error(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+
+    # Feature importance analysis (only for tree-based models)
+    if model_type in ['decision_tree', 'random_forest']:
+        # After fitting, retrieve feature names for OneHotEncoder if categorical columns exist
+        if categorical_cols:
+            feature_names = (numerical_cols +
+                             list(pipeline.named_steps['preprocessor']
+                                  .named_transformers_['cat']
+                                  .get_feature_names_out(categorical_cols)))
+        else:
+            feature_names = numerical_cols
+
+        feature_importance = pd.DataFrame(
+            pipeline.named_steps['model'].feature_importances_, 
+            index=feature_names, 
+            columns=["Importance"]
+        )
+    else:
+        feature_importance = None
+
+    # Print results in human-comprehendable form
+    print_human_readable_results(mse, mae, r2, feature_importance, model_type)
+
+def main():
+    # Command-line argument parsing
+    parser = argparse.ArgumentParser(description="Machine Learning Model")
+    parser.add_argument('file', type=str, help='Path to the CSV file')
+    parser.add_argument('model_type', type=str, help='Type of model to use (linear, decision_tree, random_forest)')
+    args = parser.parse_args()
+
+    # Load the dataset
+    try:
+        df = pd.read_csv(args.file)
+    except Exception as e:
+        print(f"Error reading the file: {e}")
+        return
+
+    # Analyze the data with the chosen model
+    analyze_data(df, model_type=args.model_type)
+
+if __name__ == "__main__":
+    main()

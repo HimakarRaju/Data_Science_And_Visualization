@@ -1,0 +1,3 @@
+Error installing re in C:\Users\HimakarRaju\Desktop\PreSkilling\Python\Data_Science_And_Visualization\session12\extractor.py
+Error installing random in C:\Users\HimakarRaju\Desktop\PreSkilling\Python\Data_Science_And_Visualization\session12\tictactoe.py
+Error installing os in C:\Users\HimakarRaju\Desktop\PreSkilling\Python\Data_Science_And_Visualization\session12\tictactoe.py

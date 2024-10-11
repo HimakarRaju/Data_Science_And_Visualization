@@ -1,0 +1,63 @@
+import os
+import cv2
+import pytesseract
+from PIL import Image
+import sympy as sp 
+
+##from tensorflow.keras.applications import MobileNetV2
+##from tensorflow.keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
+##from tensorflow.keras.preprocessing.image import img_to_array
+import numpy as np
+from prettytable import PrettyTable
+
+
+
+# Configure pytesseract
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Update with your path
+
+def extract_text_from_image(image_path):
+    """Extract text from image using pytesseract"""
+    try:
+        img = Image.open(image_path)
+        text = pytesseract.image_to_string(img)
+        return text.strip()
+    except Exception as e:
+        return f"Error extracting text: {e}"
+
+image_path = r"C:\\python_sep\\Picturefom4.png"
+image2=extract_text_from_image(image_path)
+print(type(image2))
+txt=image2.replace("=" ,",")
+print(txt) 
+#solving the equation
+
+x=sp.Symbol('x')
+##expr=Eq(sympify(txt,evaluate=False))
+##print(expr)
+lhs,rhs,lhs2,rhs2 = txt.split(",")
+print(lhs,rhs,lhs2,rhs2)
+
+equations = []
+lines = txt.split("\n")
+for line in lines:
+    line = txt.strip()
+    if "=" in line:
+        try:
+            lhs=lhs.replace("x","*x")
+            p = sp.solveset(sp.Eq(eval(lhs),eval(rhs)),x)
+            print(p)
+
+        except Exception as e:
+            return f"Error extracting text: {e}"
+
+
+##s=sp.sympify(lhs)
+##print(s)
+##print(lhs,rhs)
+
+
+
+
+
+
+
